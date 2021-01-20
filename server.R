@@ -22,7 +22,7 @@ function(input, output, session) {
             select(
                 Country = Country_Name,
                 Region,
-
+                
                 GetColumns('Cases'),
                 GetColumns('Population'),
                 GetColumns('Health'),
@@ -39,12 +39,12 @@ function(input, output, session) {
         print('Loading selected data')
         
         load_data() %>%
-        { if (values$region == 'All Countries' | values$region == '') filter(., TRUE) else filter(., Region == values$region) }
+            { if (values$region == 'All Countries' | values$region == '') filter(., TRUE) else filter(., Region == values$region) }
     })
     
     load_map_data <- reactive({
         print('Loading map data')
-        world_shapefiles <- read_sf(dsn = "world-shape-files/ne_50m_admin_0_countries.shp")
+        world_shapefiles <- read_sf(dsn = 'world-shape-files/ne_50m_admin_0_countries.shp')
         
         world_shapefiles[world_shapefiles$NAME == 'Antigua and Barb.', 'NAME'] <- 'Antigua and Barbuda'
         world_shapefiles[world_shapefiles$NAME == 'Central African Rep.', 'NAME'] <- 'Central African Republic'
@@ -117,7 +117,7 @@ function(input, output, session) {
             }
         }
     )
-
+    
     PlotMap <- reactive({
         if (is.null(input$region)) {
             return (NULL)
@@ -126,10 +126,10 @@ function(input, output, session) {
         if (input$tab != GetCategory(input$variable)) {
             return (NULL)
         }
-            
+        
         print(paste0('Loading map / Tab = ', input$tab))
         print(paste0('Loading map / Var = ', input$variable))
-
+        
         map_data <- load_map_data()
         variable <- input$variable
         
@@ -139,9 +139,9 @@ function(input, output, session) {
             'Neutral' = c('#fec44f', '#d95f0e'),
             'Bad' = c('#ffeda0', 'red4')
         )
-
-        qpal <- colorNumeric(colors, map_data[[variable]], na.color = "#bdbdbd")
-
+        
+        qpal <- colorNumeric(colors, map_data[[variable]], na.color = '#bdbdbd')
+        
         region <- input$region
         
         if (region == 'All Countries') {
@@ -226,18 +226,35 @@ function(input, output, session) {
         if (input$tab != GetCategory(input$variable)) {
             return (NULL)
         }
-
+        
         print(paste0('Loading plot / Tab = ', input$tab))
         print(paste0('Loading plot / Var = ', input$variable))
         
         data = load_selected_data()
-
+        
         Region <- input$region
         Description <- GetDescription(input$variable)
-        
+
+        CorrTest <- cor.test(data[[input$variable]], log10(data$Confirmed))
+        Plabel <- ifelse(CorrTest$p.value < 0.001, 'p < 0.001', paste0('p = ', round(CorrTest$p.value, 3)))
+        x_max <- max(data[[input$variable]], na.rm = TRUE)
+        x_min <- min(data[[input$variable]], na.rm = TRUE)
+        y_max <- max(log10(data$Confirmed), na.rm = TRUE)
+        y_min <- min(log10(data$Confirmed), na.rm = TRUE)
+        x_label <- (x_max - x_min) / 5 + x_min
+        y_label <- y_max - (y_max - y_min) / 10
+
         viz <- ggplot(data = data, aes(x = .data[[input$variable]], y = log10(Confirmed))) +
             geom_point(aes(text = paste0('Country: ', Country), color = Region)) +
             geom_smooth(method = 'lm', formula = y ~ x) +
+            annotate(
+                'text', 
+                label = paste0('R = ', round(CorrTest$estimate, 2), ', ', Plabel), 
+                x = x_label,
+                y = y_label,
+                color = 'steelblue',
+                size = 5
+            ) +
             labs(
                 # title = paste0(Region, ' - ', Description, ' and Confirmed Cases'),
                 x = Description,
@@ -245,7 +262,11 @@ function(input, output, session) {
             ) +
             ggplot_defaults
         
-        ggplotly(viz)
+        ggplotly(viz) %>%
+            layout(
+                title = paste0(Region, ' - ', Description, ' and Confirmed Cases'),
+                margin = 50
+            )
     })    
     
     output$map_cases <- renderLeaflet({

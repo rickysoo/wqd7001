@@ -154,7 +154,38 @@ ui <- fluidPage(
             withLoader(
                 DTOutput('data'),
                 loader = 'pacman'
-            )
+            ),
+            
+            h3('Data Sources'),
+            tags$ul(
+              tags$li('Best Healthcare ranking: ', a('https://www.who.int/healthinfo/paper30.pdf', target = '_blank')),
+              tags$li('Current health expenditure (% of GDP): ', a('https://data.worldbank.org/indicator/SH.XPD.CHEX.GD.ZS', target = '_blank')),
+              tags$li('Hospital beds: ', a('https://www.kaggle.com/ikiulian/global-hospital-beds-capacity-for-covid19?select=hospital_beds_global_v1.csv', target = '_blank')),
+              tags$li('Covid test: ', a('https://ourworldindata.org/coronavirus-testing#how-many-tests-are-performed-each-day', target = '_blank')),
+              tags$li('Doctors and Nurses: ', a('https://data.oecd.org/healthres/doctors.htm#indicator-chart', target = '_blank')),
+              tags$li('Novel Coronavirus (COVID-19) Cases Data: ', a('https://data.humdata.org/dataset/novel-coronavirus-2019-ncov-cases', target = '_blank')),
+              tags$li('The World Bank: ', a('https://data.worldbank.org/indicator', target = '_blank')),
+              tags$li('World Happiness Report: ', a('https://www.kaggle.com/unsdsn/world-happiness', target = '_blank')),
+              tags$li('Government Expenditure on Education: ', a('https://data.worldbank.org/indicator/SE.XPD.TOTL.GD.ZS?view=chart', target = '_blank')),
+              tags$li('Adult female literacy rate: ', a('https://data.worldbank.org/indicator/SE.ADT.LITR.FE.ZS?view=chart', target = '_blank')),
+              tags$li('Adult male literacy rate: ', a('https://data.worldbank.org/indicator/SE.ADT.LITR.MA.ZS?view=chart', target = '_blank')),
+              tags$li('Youth female literacy rate: ', a('https://data.worldbank.org/indicator/SE.ADT.1524.LT.FE.ZS?view=chart', target = '_blank')),
+              tags$li('Youth male literacy rate: ', a('https://data.worldbank.org/indicator/SE.ADT.1524.LT.MA.ZS?view=chart', target = '_blank')),
+              tags$li('Adult total literacy rate: ', a('https://data.worldbank.org/indicator/SE.ADT.LITR.ZS?view=chart', target = '_blank')),
+              tags$li('Youth total literacy rate: ', a('https://data.worldbank.org/indicator/SE.ADT.1524.LT.ZS?view=chart ', target = '_blank')),
+              tags$li('Cause of death, by communicable diseases and maternal, prenatal and nutrition conditions (% of total): ', a('https://data.worldbank.org/indicator/SH.DTH.COMM.ZS', target = '_blank')),
+              tags$li('Cause of death, by injury (% of total): ', a('https://data.worldbank.org/indicator/SH.DTH.INJR.ZS?view=map', target = '_blank')),
+              tags$li('Cause of death, by non-communicable diseases (% of total): ', a('https://data.worldbank.org/indicator/SH.DTH.NCOM.ZS', target = '_blank')),
+              tags$li('Death rate, crude (per 1,000 people): ', a('https://data.worldbank.org/indicator/SP.DYN.CDRT.IN', target = '_blank')),
+              tags$li('Diabetes prevalence (% of population ages 20 to 79): ', a('https://data.worldbank.org/indicator/SH.STA.DIAB.ZS', target = '_blank')),
+              tags$li('Immunization, DPT (% of children ages 12-23 months): ', a('https://data.worldbank.org/indicator/SH.IMM.IDPT', target = '_blank')),
+              tags$li('Immunization, HepB3 (% of one-year-old children): ', a('https://data.worldbank.org/indicator/SH.IMM.HEPB', target = '_blank')),
+              tags$li('Immunization, measles (% of children ages 12-23 months): ', a('https://data.worldbank.org/indicator/SH.IMM.MEAS', target = '_blank')),
+              tags$li('Life expectancy at birth, total (years): ', a('https://data.worldbank.org/indicator/SP.DYN.LE00.IN', target = '_blank')),
+              tags$li('Prevalence of anemia among children (% of children under 5): ', a('https://data.worldbank.org/indicator/SH.ANM.CHLD.ZS', target = '_blank')),
+              tags$li('Prevalence of undernourishment (% of population): ', a('https://data.worldbank.org/indicator/SN.ITK.DEFC.ZS', target = '_blank')),
+              tags$li('Risk of impoverishing expenditure for surgical care (% of people at risk): ', a('https://data.worldbank.org/indicator/SH.SGR.IRSK.ZS', target = '_blank'))
+            )              
         ),
         tabPanel(
             'User Guide',
